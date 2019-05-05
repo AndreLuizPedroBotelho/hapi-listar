@@ -6,6 +6,10 @@ const failAction = (request, headers, erro) => {
     throw erro;
 };
 
+const headers = Joi.object({
+    authorization: Joi.string().required()
+}).unknown()
+
 class HeroRoutes extends BaseRoute {
     constructor(db) {
         super()
@@ -18,14 +22,15 @@ class HeroRoutes extends BaseRoute {
             method: 'GET',
             config: {
                 tags: ['api'],
-                description:'Deve listar herois',
-                notes:'Pode paginar resultado e filtrar por nome',
+                description: 'Deve listar herois',
+                notes: 'Pode paginar resultado e filtrar por nome',
                 validate: {
                     //payload->body
                     //headers-> header
                     //params-> na URL :id
                     //query -> ?ski=10&limit=10
                     failAction,
+                    headers,
                     query: {
                         skip: Joi.number().integer().default(0),
                         limit: Joi.number().integer().default(10),
@@ -47,7 +52,6 @@ class HeroRoutes extends BaseRoute {
                     return this.db.read(nome ? query : {}, skip, limit)
 
                 } catch (error) {
-                    console.log('DEU RUIM', error);
                     return Boom.internal()
                 }
             }
@@ -60,14 +64,15 @@ class HeroRoutes extends BaseRoute {
             method: 'POST',
             config: {
                 tags: ['api'],
-                description:'Deve cadastrar herois',
-                notes:'Pode cadastrar um heroi',
+                description: 'Deve cadastrar herois',
+                notes: 'Pode cadastrar um heroi',
                 validate: {
                     //payload->body
                     //headers-> header
                     //params-> na URL :id
                     //query -> ?ski=10&limit=10
                     failAction,
+                    headers,
                     payload: {
                         nome: Joi.string().required().min(3).max(100),
                         poder: Joi.string().required().min(2).max(100)
@@ -86,7 +91,6 @@ class HeroRoutes extends BaseRoute {
                     }
 
                 } catch (error) {
-                    console.log('DEU RUIM', error);
                     return Boom.internal()
                 }
             }
@@ -99,14 +103,15 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH',
             config: {
                 tags: ['api'],
-                description:'Deve atualizar herois por id',
-                notes:'Pode atualizar um heroi',
+                description: 'Deve atualizar herois por id',
+                notes: 'Pode atualizar um heroi',
                 validate: {
                     //payload->body
                     //headers-> header
                     //params-> na URL :id
                     //query -> ?ski=10&limit=10
                     failAction,
+                    headers,
                     params: {
                         id: Joi.string().required()
                     },
@@ -134,7 +139,6 @@ class HeroRoutes extends BaseRoute {
                     }
 
                 } catch (error) {
-                    console.log('DEU RUIM', error);
                     return Boom.internal()
                 }
             }
@@ -147,14 +151,15 @@ class HeroRoutes extends BaseRoute {
             method: 'DELETE',
             config: {
                 tags: ['api'],
-                description:'Deve deletar herois por id',
-                notes:'Pode deletar um heroi',
+                description: 'Deve deletar herois por id',
+                notes: 'Pode deletar um heroi',
                 validate: {
                     //payload->body
                     //headers-> header
                     //params-> na URL :id
                     //query -> ?ski=10&limit=10
                     failAction,
+                    headers,
                     params: {
                         id: Joi.string().required()
                     }
@@ -171,7 +176,6 @@ class HeroRoutes extends BaseRoute {
                     }
 
                 } catch (error) {
-                    console.log('DEU RUIM', error);
                     return Boom.internal()
                 }
             }

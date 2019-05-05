@@ -1,5 +1,5 @@
 const assert = require('assert')
-const api = require('./../api')
+const api = require('../api')
 let app = {}
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Luffy',
@@ -7,7 +7,7 @@ const MOCK_HEROI_CADASTRAR = {
 }
 
 let MOCK_HEROI_ID = '';
-
+let headers = '';
 let MOCK_HEROI_ID_INVALIDO = '5cb276516c06b958b0b6ca4f';
 
 const MOCK_HEROI_DEFAULT = {
@@ -21,25 +21,40 @@ const MOCK_HEROI_ATUALIZAR = {
     poder: 'Implacável'
 }
 
-describe.only('Suite de testes da APi Heroes', function () {
+describe('Suite de testes da APi Heroes', function () {
     this.beforeAll(async () => {
         app = await api
+
+        //get token
+        const token = await app.inject({
+            method: 'POST',
+            url: '/login',
+            payload: {
+                username: 'andreteste',
+                password: '123'
+            }
+        })
+        const dadosToken = JSON.parse(token.payload)
+        headers = { Authorization: dadosToken.token }
+
+        //cadastrar os default
         const result = await app.inject({
             method: 'POST',
             url: '/herois',
+            headers,
             payload: JSON.stringify(MOCK_HEROI_DEFAULT)
         })
-
         const dados = JSON.parse(result.payload)
         MOCK_HEROI_ID = dados._id
+
     })
 
     it('listar /herois', async () => {
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: '/herois?skip=0&limit=10'
         })
-
 
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
@@ -52,6 +67,7 @@ describe.only('Suite de testes da APi Heroes', function () {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`
         })
 
@@ -66,6 +82,7 @@ describe.only('Suite de testes da APi Heroes', function () {
         const TAMANHO_LIMITE = 'EEE'
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`
         })
 
@@ -78,6 +95,7 @@ describe.only('Suite de testes da APi Heroes', function () {
                 "keys": ["limit"]
             }
         }
+        
         assert.deepEqual(result.statusCode, 400)
 
         assert.deepEqual(result.payload, JSON.stringify(erroResult))
@@ -88,6 +106,7 @@ describe.only('Suite de testes da APi Heroes', function () {
 
         const result = await app.inject({
             method: 'GET',
+            headers,
             url: `/herois?skip=0&limit=5000&nome=${NAME}`
         })
 
@@ -102,6 +121,7 @@ describe.only('Suite de testes da APi Heroes', function () {
         const result = await app.inject({
             method: 'POST',
             url: '/herois',
+            headers,
             payload: JSON.stringify(MOCK_HEROI_CADASTRAR)
         })
 
@@ -114,10 +134,11 @@ describe.only('Suite de testes da APi Heroes', function () {
 
     it('atualizar /herois/:id-PATCH', async () => {
         const _id = MOCK_HEROI_ID
-        
+
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${_id}`,
+            headers,
             payload: JSON.stringify(MOCK_HEROI_ATUALIZAR)
         })
 
@@ -129,11 +150,12 @@ describe.only('Suite de testes da APi Heroes', function () {
     })
 
     it('atualizar /herois/:id-PATCH ->id errado', async () => {
-        const _id =  MOCK_HEROI_ID_INVALIDO
-        
+        const _id = MOCK_HEROI_ID_INVALIDO
+
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${_id}`,
+            headers,
             payload: JSON.stringify(MOCK_HEROI_ATUALIZAR)
         })
 
@@ -143,13 +165,14 @@ describe.only('Suite de testes da APi Heroes', function () {
         assert.ok(statusCode === 412)
         assert.deepEqual(dados.message, 'Id não encontrado!')
     })
-    
+
 
     it('remover DELETE - /herois/:id', async () => {
         const _id = MOCK_HEROI_ID
-        
+
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/herois/${_id}`,
         })
 
@@ -162,9 +185,10 @@ describe.only('Suite de testes da APi Heroes', function () {
 
     it('remover DELETE - /herois/:id ->id errado', async () => {
         const _id = MOCK_HEROI_ID_INVALIDO
-        
+
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/herois/${_id}`,
         })
 
@@ -179,9 +203,10 @@ describe.only('Suite de testes da APi Heroes', function () {
 
     it('remover DELETE - /herois/:id ->dado invalido', async () => {
         const _id = 'ID_INVALIDO'
-        
+
         const result = await app.inject({
             method: 'DELETE',
+            headers,
             url: `/herois/${_id}`,
         })
 

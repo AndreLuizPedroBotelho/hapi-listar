@@ -20,7 +20,7 @@ describe('Postgres Strategy', function () {
     this.timeout(Infinity)
     this.beforeAll(async function () {
         const connection = await Postgres.connect()
-        const model = await Postgres.defineModal(connection,HeroiSchema)
+        const model = await Postgres.defineModel(connection,HeroiSchema)
         context = new Context(new Postgres(connection, model))
 
         await context.delete()

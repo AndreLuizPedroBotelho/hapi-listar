@@ -19,7 +19,7 @@ class Postgres extends ICrud {
         }
     }
 
-    static async defineModal(connection, schema) {
+    static async defineModel(connection, schema) {
         const model = connection.define(
             schema.name, schema.schema, schema.options
         )
@@ -28,8 +28,9 @@ class Postgres extends ICrud {
         return model;
     }
 
-    async update(id, item) {
-        return this._schema.update(item, { where: { id: id } })
+    async update(id, item, upsert = false) {
+        const fn = upsert ? 'upsert' : 'update'
+        return this._schema[fn](item, { where: { id: id } })
     }
 
     async delete(id) {
