@@ -1,26 +1,40 @@
+const { config } = require('dotenv')
+const { join } = require('path')
+const { ok } = require('assert')
+
+const env = process.env.NODE_ENV || 'dev'
+
+
+ok(env === 'prod' || env === 'dev', 'A env é invalida,ou dev ou prod')
+
+const configPath = join(__dirname, './config', `.env.${env}`)
+
+config({ 
+    path: configPath 
+})
+
 const Hapi = require('hapi')
 
-const MongoDB = require('./db/strategies/mongodb/mongodb')
-const Postgres = require('./db/strategies/postgres/postgres')
+const MongoDB = require('./src/db/strategies/mongodb/mongodb')
+const Postgres = require('./src/db/strategies/postgres/postgres')
 
-const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
-const UserSchema = require('./db/strategies/postgres/schemas/userSchema')
+const HeroiSchema = require('./src/db/strategies/mongodb/schemas/heroisSchema')
+const UserSchema = require('./src/db/strategies/postgres/schemas/userSchema')
 
-const Context = require('./db/strategies/base/contextStrategy')
+const Context = require('./src/db/strategies/base/contextStrategy')
 
-const HeroRoute = require('./routes/heroRoutes')
-const AuthRoute = require('./routes/authRoutes')
-
+const HeroRoute = require('./src/routes/heroRoutes')
+const AuthRoute = require('./src/routes/authRoutes')
 
 const HapiSwagger = require('hapi-swagger')
 const Vision = require('vision')
 const Inert = require('inert')
 const HapiJwt = require('hapi-auth-jwt2')
 
-const JWT_SECRET = "CHAVE_SECRETA"
+const JWT_SECRET = process.env.JWT_KEY
 
 const app = new Hapi.Server({
-    port: 6040
+    port: process.env.PORT
 })
 
 let context, contextPostgres = {}
@@ -63,7 +77,7 @@ async function main() {
                 id: dado.id
             })
 
-            if(!result){
+            if (!result) {
                 return {
                     isValid: false
                 }

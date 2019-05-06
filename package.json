@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/api.js",
-    "test": "mocha src/tests/*.js",
-    "test:watch": "mocha src/tests/*.js -w"
+    "start": "nodemon api.js",
+    "test": "mocha tests/*.js",
+    "test:watch": "mocha tests/*.js -w"
   },
   "keywords": [],
   "author": "André Luiz Pedr Botelho",
@@ -14,6 +14,7 @@
   "dependencies": {
     "bcrypt": "^3.0.6",
     "boom": "^7.3.0",
+    "dotenv": "^8.0.0",
     "hapi": "^18.1.0",
     "hapi-auth-jwt2": "^8.4.0",
     "hapi-swagger": "^9.4.2",

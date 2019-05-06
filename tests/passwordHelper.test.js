@@ -1,5 +1,5 @@
 const assert = require('assert')
-const PasswordHelper = require('../helpers/passwordHelper')
+const PasswordHelper = require('../src/helpers/passwordHelper')
 
 const SENHA = 'teste1234'
 const HASH ='$2b$04$.zi2fHvAT4xfJGsQSxDZ5uI/0Q3yYIagAg.hAP8l3YsD4C9pilgjC'

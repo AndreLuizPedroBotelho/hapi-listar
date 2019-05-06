@@ -1,7 +1,7 @@
 const assert = require('assert')
-const MongoDB = require('./../db/strategies/mongodb/mongodb')
-const HeroiSchema = require('./../db/strategies/mongodb/schemas/heroisSchema')
-const Context = require('./../db/strategies/base/contextStrategy')
+const MongoDB = require('./../src/db/strategies/mongodb/mongodb')
+const HeroiSchema = require('./../src/db/strategies/mongodb/schemas/heroisSchema')
+const Context = require('./../src/db/strategies/base/contextStrategy')
 
 let context = {}
 

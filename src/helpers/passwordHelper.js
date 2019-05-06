@@ -5,7 +5,7 @@ const {
 
 const hashAsync = promisify(Bcrypt.hash)
 const compareAsync = promisify(Bcrypt.compare)
-const SALT = 3
+const SALT = parseInt(process.env.SALT_PWD)
 
 class PassworldHelper {
 
