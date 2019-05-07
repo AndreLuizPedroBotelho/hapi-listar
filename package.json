@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon api.js",
+    "prod": "cross-env NODE_ENV=prod node api.js",
     "test": "mocha tests/*.js",
     "test:watch": "mocha tests/*.js -w",
     "test:prod": "cross-env NODE_ENV=prod npm test"
