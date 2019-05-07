@@ -34,7 +34,6 @@ describe('MongoDB Suite de testes', function () {
 
     it('verificar  conexão', async () => {
         const result = await context.isConnected()
-        console.log('result', result)
         const expected = 'Conectado'
 
         assert.equal(result, expected)
@@ -65,7 +64,6 @@ describe('MongoDB Suite de testes', function () {
         const result = {
             nome, poder
         }
-        console.log('result', result)
 
         assert.deepEqual(result, MOCK_HEROI_DEFAULT)
     })

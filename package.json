@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon api.js",
     "test": "mocha tests/*.js",
-    "test:watch": "mocha tests/*.js -w"
+    "test:watch": "mocha tests/*.js -w",
+    "test:prod": "cross-env NODE_ENV=prod npm test"
   },
   "keywords": [],
   "author": "André Luiz Pedr Botelho",
