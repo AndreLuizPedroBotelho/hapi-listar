@@ -20,6 +20,27 @@ class AuthRoutes extends BaseRoute {
         this.db = db
     }
 
+    index() {
+        return {
+            path: '/',
+            method: 'GET',
+            config: {
+                auth: false,
+                    validate: {
+                    //payload->body
+                    //headers-> header
+                    //params-> na URL :id
+                    //query -> ?ski=10&limit=10
+                    failAction,
+                }
+            },
+            handler: async (request) => {
+                 return { Mensagem:"Bem vindo a api criada com o hapi" }
+
+           }
+        }
+    }
+
     login() {
         return {
             path: '/login',
