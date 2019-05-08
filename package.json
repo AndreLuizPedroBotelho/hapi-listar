@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon api.js",
-    "prod": "cross-env NODE_ENV=prod node api.js",
+    "prod": "cross-env NODE_ENV=prod pm2-runtime api.js",
     "test": "mocha --timeout 10000 tests/*.js",
     "test:watch": "mocha tests/*.js -w",
     "test:prod": "cross-env NODE_ENV=prod npm test"
@@ -27,6 +27,7 @@
     "mongoose": "^5.5.1",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
+    "pm2": "^3.5.0",
     "sequelize": "^5.7.1",
     "vision": "^5.4.4"
   },
